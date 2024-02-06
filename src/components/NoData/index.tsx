@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { memo } from 'react';
-import { FaFile } from 'react-icons/fa';
+import { memo } from "react";
+import { FaFile } from "react-icons/fa";
+import Button from "../Unity/Button";
 
 const NoData = ({
-  title = 'No Todo',
-  buttonText = 'Create Todo Now',
+  title = "No Todo",
+  buttonText = "Create Todo Now",
   isShowButtonAction = true,
   onClick,
 }: {
@@ -15,19 +16,16 @@ const NoData = ({
   onClick?: () => void;
 }) => {
   return (
-    <div className="mx-auto font-mono">
-      <p className="text-[64px] text-center justify-center flex mb-4">
-        <FaFile />
+    <div className="mx-auto">
+      <p className="mb-4 flex justify-center text-center text-[64px]">
+        <FaFile color="grey" />
       </p>
-      <h3 className="text-center font-bold text-[20px] mb-4">{title}</h3>
+      <h3 className="mb-4 text-center text-[20px] font-bold">{title}</h3>
       {isShowButtonAction && (
         <div className="flex justify-center">
-          <button
-            onClick={onClick}
-            className="group flex items-center bg-main px-4 py-4 rounded-xl hover:bg-[#fff] hover:text-[#000] transition-all"
-          >
+          <Button onClick={onClick}>
             <span className="px-2">{buttonText}</span>
-          </button>
+          </Button>
         </div>
       )}
     </div>

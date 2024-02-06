@@ -3,10 +3,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 import AppModalContextProvider from "@/Context/ModalContext";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ToastContainer } from "react-toastify";
 import StyledComponentsRegistry from "./registry";
+import StoreProvider from "@/state/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Wow Todo",
@@ -21,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <AppModalContextProvider>{children}</AppModalContextProvider>
-        </StyledComponentsRegistry>
+        <StoreProvider>
+          <StyledComponentsRegistry>
+            <AppModalContextProvider>
+              <div>{children}</div>
+            </AppModalContextProvider>
+          </StyledComponentsRegistry>
+        </StoreProvider>
         <ToastContainer />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

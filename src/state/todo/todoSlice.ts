@@ -1,20 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export interface ITwitterOAuth {
-  accessToken?: string;
-  refreshToken?: string;
-  twitterId?: string;
-  picture?: string;
-}
-
-interface IOtherState {
-  isLoading: boolean;
-}
-
-export interface IInitialState extends ITwitterOAuth, IOtherState {}
-
-const initialState = [] as ITodo[];
-
 export interface ITodo {
   id: string;
   title: string;
@@ -22,21 +7,27 @@ export interface ITodo {
   isDone: boolean;
 }
 
+const initialState = [] as ITodo[];
+
 const totoSlice = createSlice({
-  name: "totoSlice",
+  name: "todoSlice",
   initialState,
   reducers: {
     addNewTodo: (state, action: PayloadAction<ITodo>) => {
+      if (!state) return;
       state.push(action.payload);
     },
     editTodo: (state, action: PayloadAction<ITodo>) => {
-      const newTodo = state.map((i) => {
-        if (i.id === action.payload.id) {
-          i = action.payload;
-        }
-        return i;
-      });
-      state = newTodo;
+      const index = state.findIndex((i) => i.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+      }
+    },
+    deleteTodo: (state, action: PayloadAction<ITodo>) => {
+      const index = state.findIndex((i) => i.id === action.payload.id);
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
     },
   },
 });

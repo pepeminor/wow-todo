@@ -1,9 +1,22 @@
-'use client';
+"use client";
 
-import React, { ReactElement, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  ReactElement,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 export interface IChildren {
-  children: string | JSX.Element | JSX.Element[] | ReactElement | React.ReactNode;
+  children:
+    | string
+    | JSX.Element
+    | JSX.Element[]
+    | ReactElement
+    | React.ReactNode;
 }
 
 interface IModalArg {
@@ -29,7 +42,7 @@ const AppModalContextProvider = (props: IChildren) => {
     body: null,
     footer: null,
     style: null,
-    title: '',
+    title: "",
     state: false,
     closeIcon: true,
   });
@@ -39,41 +52,41 @@ const AppModalContextProvider = (props: IChildren) => {
   const [modalCl, setModalCl] = useState<any>();
 
   useEffect(() => {
-    setModalOverlay(window?.document.querySelector('#modal_overlay'));
-    setModal(window?.document.querySelector('#modal'));
+    setModalOverlay(window?.document.querySelector("#modal_overlay"));
+    setModal(window?.document.querySelector("#modal"));
     setModalCl(modal?.classList);
   }, [modal?.classList, modalArg, modal_overlay?.classList]);
 
   const closeModal = useCallback(() => {
-    modalCl?.add('-translate-y-full');
-    window?.document?.body?.classList?.remove('overflow-hidden');
-    window?.document?.body?.classList?.remove('h-screen');
-    setModalArg({ title: '', body: null, footer: null, style: null });
+    modalCl?.add("-translate-y-full");
+    window?.document?.body?.classList?.remove("overflow-hidden");
+    window?.document?.body?.classList?.remove("h-screen");
+    setModalArg({ title: "", body: null, footer: null, style: null });
     setTimeout(() => {
-      modalCl?.add('opacity-0');
-      modalCl?.add('scale-150');
+      modalCl?.add("opacity-0");
+      modalCl?.add("scale-150");
     }, 100);
-    setTimeout(() => modal_overlay?.classList.add('hidden'), 300);
+    setTimeout(() => modal_overlay?.classList.add("hidden"), 300);
   }, [modalCl, modal_overlay?.classList]);
 
   const openModal = useCallback(
     (arg: IModalArg) => {
-      modal_overlay?.classList.remove('hidden');
-      window?.document?.body?.classList?.add('overflow-hidden');
-      window?.document?.body?.classList?.add('h-screen');
+      modal_overlay?.classList.remove("hidden");
+      window?.document?.body?.classList?.add("overflow-hidden");
+      window?.document?.body?.classList?.add("h-screen");
       setTimeout(() => {
-        modalCl?.remove('opacity-0');
-        modalCl?.remove('-translate-y-full');
-        modalCl?.remove('scale-150');
+        modalCl?.remove("opacity-0");
+        modalCl?.remove("-translate-y-full");
+        modalCl?.remove("scale-150");
       }, 100);
       setModalArg({
-        title: arg.title ?? '',
+        title: arg.title ?? "",
         body: arg.body ?? null,
         footer: arg.footer ?? null,
         style: arg.style ?? null,
       });
     },
-    [modalCl, modal_overlay?.classList]
+    [modalCl, modal_overlay?.classList],
   );
 
   const contextValues = useMemo(() => {
@@ -92,21 +105,23 @@ const AppModalContextProvider = (props: IChildren) => {
       <>
         {/* overlay */}
         <div
+          onClick={closeModal}
           id="modal_overlay"
-          className="absolute inset-0 flex hidden h-screen w-full items-start justify-center bg-content bg-opacity-80 pt-10 md:items-center md:pt-0 z-50"
+          className="absolute inset-0 z-50 flex hidden h-screen w-full items-start justify-center bg-content bg-opacity-80 pt-10 md:items-center md:pt-0"
         >
           {/* modal */}
           <>
             <div
               id="modal"
-              className="relative min-h-[300px] min-w-[640px] -translate-y-full	 scale-150 transform rounded-[10px] bg-dark opacity-0 shadow-lg transition-opacity transition-transform duration-300 ease-in-out sm:w-[100%] sm:min-w-[100%]"
+              onClick={(e) => e.stopPropagation()}
+              className="z-100 relative min-w-[640px] -translate-y-full	 scale-150 transform rounded-[10px] bg-dark opacity-0 shadow-lg transition-opacity transition-transform duration-300 ease-in-out sm:w-[100%] sm:min-w-[100%]"
               style={{ ...modalArg.style }}
             >
               {/* button close */}
               {modalArg.title && (
                 <div className="flex items-center justify-between border-b border-gray px-4 py-3">
                   {modalArg.title && (
-                    <h2 className="text-white w-full  overflow-hidden text-ellipsis whitespace-nowrap text-xl font-semibold">
+                    <h2 className="w-full overflow-hidden  text-ellipsis whitespace-nowrap text-xl font-semibold text-black">
                       {modalArg.title}
                     </h2>
                   )}
@@ -119,7 +134,7 @@ const AppModalContextProvider = (props: IChildren) => {
                 </div>
               )}
 
-              <div className="w-full p-3 relative z-10">{modalArg.body}</div>
+              <div className="relative w-full p-3">{modalArg.body}</div>
 
               {modalArg?.footer && (
                 <div className="absolute bottom-0 left-0 flex w-full items-center justify-end gap-3 border-t border-gray px-4 py-3">
@@ -136,4 +151,5 @@ const AppModalContextProvider = (props: IChildren) => {
 
 export default AppModalContextProvider;
 
-export const useAppModalContext = () => useContext(AppModalContext) as IAppModalContext;
+export const useAppModalContext = () =>
+  useContext(AppModalContext) as IAppModalContext;
